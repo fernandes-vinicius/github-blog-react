@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
+import { FaGithub } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 
 import {
   faArrowUpRightFromSquare,
+  faCalendarDay,
   faChevronLeft,
+  faComment,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import gfm from 'remark-gfm'
@@ -13,11 +16,14 @@ import { Link } from '@/components/Link'
 import { repoName } from '@/constants'
 import { githubAPI } from '@/lib/axios'
 import { IPost } from '@/types'
+import { formatDate } from '@/utils/dateFormatter'
 
 import {
   PostContainer,
   PostContent,
   PostHeader,
+  PostInfoContainer,
+  PostInfoItem,
   PostLinks,
   PostTitle,
 } from './styles'
@@ -35,6 +41,9 @@ export function Post() {
   useEffect(() => {
     fetchPost()
   }, [fetchPost])
+
+  const commentsLabel =
+    Number(post?.comments) === 1 ? 'comentário' : 'comentários'
 
   return (
     <PostContainer>
@@ -54,6 +63,26 @@ export function Post() {
         </PostLinks>
 
         <PostTitle>{post?.title}</PostTitle>
+
+        <PostInfoContainer>
+          {post?.user && (
+            <PostInfoItem>
+              <FaGithub size={18} /> <span>{post.user.login}</span>
+            </PostInfoItem>
+          )}
+
+          {post?.created_at && (
+            <PostInfoItem>
+              <FontAwesomeIcon icon={faCalendarDay} />
+              <span>{formatDate(new Date(post.created_at))}</span>
+            </PostInfoItem>
+          )}
+
+          <PostInfoItem>
+            <FontAwesomeIcon icon={faComment} />
+            <span>{`${post?.comments ?? 0} ${commentsLabel}`}</span>
+          </PostInfoItem>
+        </PostInfoContainer>
       </PostHeader>
 
       <PostContent>

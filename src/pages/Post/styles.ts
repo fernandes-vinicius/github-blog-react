@@ -33,6 +33,29 @@ export const PostTitle = styled.h1`
   color: ${(props) => props.theme['base-title']};
 `
 
+export const PostInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+
+  margin-top: 1.5rem;
+`
+
+export const PostInfoItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg {
+    color: ${(props) => props.theme['base-label']};
+  }
+
+  span {
+    color: ${(props) => props.theme['base-span']};
+  }
+`
+
 export const PostContent = styled.div`
   display: flex;
   flex-direction: column;

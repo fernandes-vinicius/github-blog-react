@@ -65,12 +65,10 @@ function ProfileComponent() {
             </ProfileInfoItem>
           )}
 
-          {user?.followers && (
-            <ProfileInfoItem>
-              <FontAwesomeIcon icon={faUserGroup} size="sm" />
-              <span>{`${user.followers} seguidores`}</span>
-            </ProfileInfoItem>
-          )}
+          <ProfileInfoItem>
+            <FontAwesomeIcon icon={faUserGroup} size="sm" />
+            <span>{`${user?.followers ?? 0} seguidores`}</span>
+          </ProfileInfoItem>
         </ProfileInfoContainer>
       </ProfileContent>
     </ProfileContainer>

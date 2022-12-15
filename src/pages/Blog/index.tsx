@@ -1,13 +1,12 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 
-import { formatDistanceToNow } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
 import { useDebounce } from 'use-debounce'
 
 import { repoName } from '@/constants'
 import { githubAPI } from '@/lib/axios'
 import { IPost } from '@/types'
+import { formatDate } from '@/utils/dateFormatter'
 
 import { Profile } from './components/Profile'
 import {
@@ -71,10 +70,7 @@ export function Blog() {
 
       <PostsContainer>
         {posts.map((post) => {
-          const formattedTime = formatDistanceToNow(new Date(post.created_at), {
-            locale: ptBR,
-            addSuffix: true,
-          })
+          const formattedTime = formatDate(new Date(post.created_at))
 
           return (
             <PostItem key={post.id}>
