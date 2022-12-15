@@ -1,2 +1,2 @@
 export const username = `fernandes-vinicius`
-export const repoName = `${username}/github-blog-react`
+export const repoName = `fernandes-vinicius/github-blog-react`

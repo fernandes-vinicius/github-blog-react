@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { FaGithub } from 'react-icons/fa'
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import Link from '@/components/Link'
+import { Link } from '@/components/Link'
 import { username } from '@/constants'
 import { githubAPI } from '@/lib/axios'
 import { IUser } from '@/types'
@@ -23,7 +23,7 @@ import {
   UserName,
 } from './styles'
 
-export function Profile() {
+function ProfileComponent() {
   const [user, setUser] = useState<IUser | null>(null)
 
   useEffect(() => {
@@ -35,42 +35,46 @@ export function Profile() {
     loadUser()
   }, [])
 
-  if (!user) {
-    return null
-  }
-
   return (
     <ProfileContainer>
-      <UserAvatar src={user.avatar_url} />
+      {user?.avatar_url && <UserAvatar src={user.avatar_url} />}
 
       <ProfileContent>
         <header>
-          <UserName>{user.name}</UserName>
+          <UserName>{user?.name}</UserName>
 
-          <Link href={user.html_url} target="_blank" rel="noopener">
+          <Link href={user?.html_url} target="_blank" rel="noopener">
             <span>GITHUB</span>
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </Link>
         </header>
 
-        <Biography>{user.bio}</Biography>
+        <Biography>{user?.bio}</Biography>
 
         <ProfileInfoContainer>
-          <ProfileInfoItem>
-            <FaGithub size={18} /> <span>{user.login}</span>
-          </ProfileInfoItem>
+          {user?.login && (
+            <ProfileInfoItem>
+              <FaGithub size={18} /> <span>{user.login}</span>
+            </ProfileInfoItem>
+          )}
 
-          <ProfileInfoItem>
-            <FontAwesomeIcon icon={faBuilding} size="sm" />
-            <span>{user.company}</span>
-          </ProfileInfoItem>
+          {user?.company && (
+            <ProfileInfoItem>
+              <FontAwesomeIcon icon={faBuilding} size="sm" />
+              <span>{user.company}</span>
+            </ProfileInfoItem>
+          )}
 
-          <ProfileInfoItem>
-            <FontAwesomeIcon icon={faUserGroup} size="sm" />
-            <span>{`${user.followers} seguidores`}</span>
-          </ProfileInfoItem>
+          {user?.followers && (
+            <ProfileInfoItem>
+              <FontAwesomeIcon icon={faUserGroup} size="sm" />
+              <span>{`${user.followers} seguidores`}</span>
+            </ProfileInfoItem>
+          )}
         </ProfileInfoContainer>
       </ProfileContent>
     </ProfileContainer>
   )
 }
+
+export const Profile = memo(ProfileComponent)

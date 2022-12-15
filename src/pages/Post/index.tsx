@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 
-import Link from '@/components/Link'
+import {
+  faArrowUpRightFromSquare,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import gfm from 'remark-gfm'
+
+import { Link } from '@/components/Link'
 import { repoName } from '@/constants'
 import { githubAPI } from '@/lib/axios'
 import { IPost } from '@/types'
@@ -16,41 +23,43 @@ import {
 } from './styles'
 
 export function Post() {
-  const { postNumber } = useParams()
+  const { number } = useParams()
 
   const [post, setPost] = useState<IPost | null>(null)
 
+  const fetchPost = useCallback(async () => {
+    const response = await githubAPI.get(`/repos/${repoName}/issues/${number}`)
+    setPost(response.data)
+  }, [number])
+
   useEffect(() => {
-    async function loadPost() {
-      const response = await githubAPI.get(
-        `/repos/${repoName}/issues/${postNumber}`,
-      )
-      setPost(response.data)
-    }
-
-    loadPost()
-  }, [postNumber])
-
-  if (!post) {
-    return null
-  }
+    fetchPost()
+  }, [fetchPost])
 
   return (
     <PostContainer>
       <PostHeader>
         <PostLinks>
           <RouterLink to="/">
-            <Link>Voltar</Link>
+            <Link>
+              <FontAwesomeIcon icon={faChevronLeft} />
+              <span>Voltar</span>
+            </Link>
           </RouterLink>
 
-          <Link>Ver no Github</Link>
+          <Link href={post?.html_url} target="_blank" rel="noopener">
+            <span>Ver no Github</span>
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+          </Link>
         </PostLinks>
 
-        <PostTitle>{post.title}</PostTitle>
+        <PostTitle>{post?.title}</PostTitle>
       </PostHeader>
 
       <PostContent>
-        <ReactMarkdown>{post.body}</ReactMarkdown>
+        {post?.body && (
+          <ReactMarkdown remarkPlugins={[gfm]}>{post.body}</ReactMarkdown>
+        )}
       </PostContent>
     </PostContainer>
   )

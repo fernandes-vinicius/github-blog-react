@@ -16,5 +16,6 @@ export interface IPost {
   created_at: string
   comments: number
   number: number
+  html_url: string
   user: IUser
 }

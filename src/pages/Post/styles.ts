@@ -40,8 +40,4 @@ export const PostContent = styled.div`
   gap: 1.5rem;
 
   overflow: hidden;
-
-  img {
-    width: 100%;
-  }
 `

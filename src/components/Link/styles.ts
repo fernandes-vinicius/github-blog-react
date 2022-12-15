@@ -8,6 +8,7 @@ export const LinkContainer = styled.a`
   font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
+  line-height: 0;
 
   color: ${(props) => props.theme.blue};
 

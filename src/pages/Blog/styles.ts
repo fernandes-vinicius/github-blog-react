@@ -32,7 +32,6 @@ export const PostSearchInput = styled.input`
   padding: 0.75rem 1rem;
 
   background: ${(props) => props.theme['base-input']};
-
   border: 1px solid ${(props) => props.theme['base-border']};
   border-radius: 6px;
 
@@ -88,7 +87,6 @@ export const PostItemBody = styled.p`
   /* IE-11 Support */
   display: block;
   max-height: 6.5rem;
-  line-height: 1.8rem;
 
   overflow: hidden;
   text-overflow: ellipsis;

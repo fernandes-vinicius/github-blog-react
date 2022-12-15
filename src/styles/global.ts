@@ -38,4 +38,9 @@ export const GlobalStyle = createGlobalStyle`
       box-shadow: none;
     }
   }
+
+  img {
+    width: 100%;
+    display: block;
+  }
 `

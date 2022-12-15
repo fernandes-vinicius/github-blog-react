@@ -48,6 +48,7 @@ export const Biography = styled.p`
 export const ProfileInfoContainer = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1.5rem;
 
   margin-top: 1.5rem;

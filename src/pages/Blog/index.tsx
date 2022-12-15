@@ -1,9 +1,9 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import { useDebounce } from 'usehooks-ts'
+import { useDebounce } from 'use-debounce'
 
 import { repoName } from '@/constants'
 import { githubAPI } from '@/lib/axios'
@@ -21,27 +21,38 @@ import {
   PostsInfoContainer,
 } from './styles'
 
+const MIN_INPUT_LENGTH = 2
+const DEBOUNCE_DELAY_IN_MILLISECONDS = 1 * 1000
+
 export function Blog() {
   const [posts, setPosts] = useState<IPost[]>([])
-  const [inputValue, setInputValue] = useState<string>('')
-  const debouncedInputValue = useDebounce<string>(inputValue, 500)
-  const totalPosts = posts.length ?? 0
+  const [inputValue, setInputValue] = useState('')
 
-  async function fetchPosts(query?: string) {
+  const [debouncedInputValue] = useDebounce(
+    inputValue,
+    DEBOUNCE_DELAY_IN_MILLISECONDS,
+  )
+
+  const fetchPosts = useCallback(async (query?: string) => {
     const response = await githubAPI.get('/search/issues', {
       params: { q: `${query}+repo:${repoName}` },
     })
 
     setPosts(response.data.items)
-  }
+  }, [])
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    setInputValue(event.target.value)
+    const value = event.target.value.trimStart()
+    setInputValue(value)
   }
 
   useEffect(() => {
-    if (debouncedInputValue) fetchPosts(debouncedInputValue)
-  }, [debouncedInputValue])
+    if (debouncedInputValue.length > MIN_INPUT_LENGTH) {
+      fetchPosts(debouncedInputValue)
+    }
+  }, [debouncedInputValue, fetchPosts])
+
+  const totalPosts = posts.length ?? 0
 
   return (
     <BlogContainer>
@@ -53,11 +64,9 @@ export function Blog() {
       </PostsInfoContainer>
 
       <PostSearchInput
-        type="text"
-        placeholder="Buscar conteúdo"
-        minLength={2}
         value={inputValue}
         onChange={handleInputChange}
+        placeholder="Buscar conteúdo"
       />
 
       <PostsContainer>
