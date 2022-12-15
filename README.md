@@ -12,6 +12,8 @@ Aplicação que utiliza a API do GitHub para buscar issues de um repositório, d
 
 ### Features
 
-[x] Listagem do seu perfil com imagem, número de seguidores, nome e outras informações disponíveis pela API do GitHub.
-[x] Listar e filtrar todas as issues do repositório com um pequeno resumo do conteúdo dela
-[x] Criar uma página para exibir um post (issue) completo
+- [x] Listagem do seu perfil com imagem, número de seguidores, nome e outras informações disponíveis pela API do GitHub.
+
+- [x] Listar e filtrar todas as issues do repositório com um pequeno resumo do conteúdo dela
+
+- [x] Criar uma página para exibir um post (issue) completo
