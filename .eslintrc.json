@@ -1,0 +1,20 @@
+{
+  "extends": "@rocketseat/eslint-config/react",
+  "plugins": ["import-helpers"],
+  "rules": {
+    "import-helpers/order-imports": [
+      "error",
+      {
+        "newlinesBetween": "always", // * new line between groups
+        "groups": [
+          "/^react/", 
+          "module", 
+          "/^@/assets//", 
+          "/^@//", 
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": true }
+      }
+    ]
+  }
+}
